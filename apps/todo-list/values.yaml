@@ -10,7 +10,7 @@ backend:
   replicaCount: 2
   image:
     repository: captainyun/k8s-labs-todo-backend
-    tag: "latest"
+    tag: "a3af3a1"
     pullPolicy: Always
 
   service:
