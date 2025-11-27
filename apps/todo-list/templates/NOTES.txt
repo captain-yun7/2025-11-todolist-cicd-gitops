@@ -1,0 +1,41 @@
+🎉 Todo List Application has been deployed!
+
+{{- if .Values.backend.enabled }}
+
+Backend Service:
+{{- if eq .Values.backend.service.type "NodePort" }}
+  - Access via NodePort: http://<NODE-IP>:{{ .Values.backend.service.nodePort.port }}
+{{- else }}
+  - Type: {{ .Values.backend.service.type }}
+  - Port: {{ .Values.backend.service.port }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.frontend.enabled }}
+
+Frontend Service:
+{{- if eq .Values.frontend.service.type "NodePort" }}
+  - Access via NodePort: http://<NODE-IP>:{{ .Values.frontend.service.nodePort.port }}
+{{- else }}
+  - Type: {{ .Values.frontend.service.type }}
+  - Port: {{ .Values.frontend.service.port }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.ingress.enabled }}
+
+Ingress:
+  - Backend API accessible via Ingress at configured host
+{{- end }}
+
+{{- if .Values.database.enabled }}
+
+Database:
+  - MySQL {{ .Values.database.image.tag }} running on port {{ .Values.database.service.port }}
+  - Database name: {{ .Values.database.auth.database }}
+{{- end }}
+
+To get the status of your deployment:
+  kubectl get all -l app.kubernetes.io/instance={{ .Release.Name }}
+
+Happy coding! 🚀

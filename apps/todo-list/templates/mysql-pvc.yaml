@@ -1,0 +1,15 @@
+{{- if and .Values.database.enabled .Values.database.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "todo-list.pvc.name" . }}
+  labels:
+    {{- include "todo-list.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ include "todo-list.storageclass.name" . }}
+  accessModes:
+    - {{ .Values.database.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.database.persistence.size }}
+{{- end }}

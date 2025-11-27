@@ -1,0 +1,25 @@
+{{- if and .Values.database.enabled .Values.database.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "todo-list.pv.name" . }}
+  labels:
+    {{- include "todo-list.labels" . | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ .Values.database.persistence.size }}
+  accessModes:
+    - {{ .Values.database.persistence.accessMode }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ include "todo-list.storageclass.name" . }}
+  local:
+    path: {{ .Values.database.persistence.localPath }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - {{ .Values.database.persistence.nodeAffinity.hostname }}
+{{- end }}

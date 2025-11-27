@@ -1,0 +1,10 @@
+{{- if and .Values.database.enabled .Values.database.persistence.enabled }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ include "todo-list.storageclass.name" . }}
+  labels:
+    {{- include "todo-list.labels" . | nindent 4 }}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+{{- end }}
